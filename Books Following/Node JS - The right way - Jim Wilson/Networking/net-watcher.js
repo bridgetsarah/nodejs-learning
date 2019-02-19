@@ -1,34 +1,37 @@
 'use strict'
-const fs = require('fs'),
-const net = require('net'),
-const filename = process.argv[2],
+const 
 
+fs = require('fs'),
+net = require('net'),
+
+filename = process.argv[2],
+
+// Create server function  +call back server three parts!
 server = net.createServer(function(connection){
 
-    // reporting
+    // reporting - connection has been established
     console.log('Subscriber connected!');
     connection.write("now watching '" + filename + "'for changes...\n");
     
 
-    //watcher setup
+    //watcher setup - begins listening for changes within the file
     let watcher = fs.watch(filename, function (){
         connection.write("File '" + filename + "' changed:" + Date.now() + "\n");
     });
 
-    // cleanup
+    // cleanup - listens that the subscriber has disconnected from server and stops watching file.
     connection.on('close', function() {
         console.log('Subscriber disconnected');
         watcher.close();
     });
 
+    //if ERROR throw tantrum
 if (!filename){
     throw Error('No target filename was specified.');
 }   
-//server listening function
+//server listening function // Call back finally passed to listen in for port 5432.
 
 server.listen(5432, function(){
     console.log('Listening for subscribers....');
-});
-
-
+    });
 });
