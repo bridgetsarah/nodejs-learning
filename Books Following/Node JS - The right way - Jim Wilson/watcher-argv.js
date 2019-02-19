@@ -1,10 +1,12 @@
-const fs = require('fs');
+const fs = require('fs'),
 const filename = process.argv[2];
 
-fs.watch('target.txt', (eventType, filename) =>{
-     if (!filename) {
-        throw Error('A file to watch must be specified!');
-    } else 
-        console.log (`Now watching ${filename} for changes...`);{
 
-        })
+if (!filename) {
+    throw Error("A file to watch must be specificied!");
+    }
+
+fs.watch('target.txt', () => {
+    console.log("file" + filename + "just changed!");
+});
+console.log("now watching" + filename + "for changes...");
