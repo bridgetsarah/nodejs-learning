@@ -11,12 +11,15 @@ server = net.createServer(function(connection){
 
     // reporting - connection has been established
     console.log('Subscriber connected!');
-    connection.write("now watching '" + filename + "'for changes...\n");
+    connection.write(JSON.stringify({
+        type: 'watching',
+        file: filename
+    }) + '\n');
     
 
     //watcher setup - begins listening for changes within the file
     let watcher = fs.watch(filename, function (){
-        connection.write("File '" + filename + "' changed:" + Date.now() + "\n");
+      connection.write("File '" + filename + "' changed: " + Date.now() + "|n");
     });
 
     // cleanup - listens that the subscriber has disconnected from server and stops watching file.
@@ -34,4 +37,4 @@ if (!filename){
 server.listen('/tmp/watcher.sock', function(){
     console.log('Listening for subscribers....');
     });
-});
+})
