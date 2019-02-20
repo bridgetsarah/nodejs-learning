@@ -1,10 +1,6 @@
-'use strict'
-const 
-
-fs = require('fs'),
-net = require('net'),
-
-filename = process.argv[2],
+const fs = require('fs');
+const net = require('net');
+const filename = process.argv[2];
 
 // Create server function  +call back server three parts!
 server = net.createServer(function(connection){
